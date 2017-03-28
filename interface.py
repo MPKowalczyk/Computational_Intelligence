@@ -1,12 +1,9 @@
 # Input interface for computational intelligence
 
-from xlrd import open_workbook
+import pandas as pd
 
-def interface(name):
-    xls=open_workbook(name)
-    sheet=xls.sheet_by_index(0)
-    cols=sheet.row_len(0)
-    matrix=[list() for x in range(cols)]
-    for x in range(0,cols):
-        matrix[x]=sheet.col(x)
-    return matrix
+def read(name,n_in,n_out):
+    data=pd.read_excel(name)
+    in_data=data.values[:,0:n_in]
+    out_data=data.values[:,n_in:(n_in+n_out)]
+    return in_data,out_data
