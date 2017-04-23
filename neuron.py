@@ -28,7 +28,8 @@ class neuron:
 #            self.delta=self.delta+i.delta#*
     def back_propagation(self):
         for i in range(0,len(self.inputs)):
-            self.inputs[i].delta=self.inputs[i].delta+self.dfun(self.inputs[i].sum)*self.delta*self.weights[i+1]
+            #self.inputs[i].delta=self.inputs[i].delta+self.dfun(self.inputs[i].sum)*self.delta*self.weights[i+1]
+            self.inputs[i].delta=self.inputs[i].delta+self.delta*self.weights[i+1]*(1-self.inputs[i].Y)*self.inputs[i].Y
     
     def change_inputs(self,arg_inputs):
         self.inputs=arg_inputs
@@ -44,7 +45,8 @@ class neuron:
     def update_weight(self,ni):
         self.weights[0]=self.weights[0]+ni*self.delta*self.dfun(self.sum)
         for i in range(1,len(self.weights)):
-            self.weights[i]=self.weights[i]+ni*self.delta*self.dfun(self.sum)*self.inputs[i-1].Y
+            #self.weights[i]=self.weights[i]+ni*self.delta*self.dfun(self.sum)*self.inputs[i-1].Y
+            self.weights[i]=self.weights[i]-ni*self.delta*self.inputs[i-1].Y
 
 class initial_neuron:
 
@@ -88,7 +90,8 @@ class initial_neuron:
     def update_weight(self,ni):
         self.weights[0]=self.weights[0]+ni*self.delta*self.dfun(self.sum)
         for i in range(1,len(self.weights)):
-            self.weights[i]=self.weights[i]+ni*self.delta*self.dfun(self.sum)*self.inputs[i-1]
+            #self.weights[i]=self.weights[i]+ni*self.delta*self.dfun(self.sum)*self.inputs[i-1]
+            self.weights[i]=self.weights[i]-ni*self.delta*self.inputs[i-1]
 
 class final_neuron:
 
@@ -117,7 +120,8 @@ class final_neuron:
     def back_propagation(self):
         self.delta=self.Y-self.outputs
         for i in range(0,len(self.inputs)):
-            self.inputs[i].delta=self.inputs[i].delta+self.delta*self.weights[i+1]
+            #self.inputs[i].delta=self.inputs[i].delta+self.delta*self.weights[i+1]
+            self.inputs[i].delta=self.inputs[i].delta+self.delta*self.weights[i+1]*(1-self.inputs[i].Y)*self.inputs[i].Y
     
     def change_inputs(self,arg_inputs):
         self.inputs=arg_inputs
@@ -133,4 +137,5 @@ class final_neuron:
     def update_weight(self,ni):
         self.weights[0]=self.weights[0]+ni*self.delta*self.dfun(self.sum)
         for i in range(1,len(self.weights)):
-            self.weights[i]=self.weights[i]+ni*self.delta*self.dfun(self.sum)*self.inputs[i-1].Y
+            #self.weights[i]=self.weights[i]+ni*self.delta*self.dfun(self.sum)*self.inputs[i-1].Y
+            self.weights[i]=self.weights[i]-ni*self.delta*self.inputs[i-1].Y

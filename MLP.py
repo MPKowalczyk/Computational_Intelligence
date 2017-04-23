@@ -55,10 +55,33 @@ class MLP:
         self.clear_delta()
         self.back_propagation()
         self.update_weight(ni)
+        
+    def train(self,inputs,outputs,iters,ni,full_inputs,full_outputs):
+        error=list()
+        correct=list()
+        for i in range(0,iters):
+            error.append(0)
+            correct.append(0)
+            for j in range(0,len(inputs)):
+                self.connect_inputs_full(inputs[j])
+                self.connect_outputs(outputs[j])
+                self.online_training(ni)
+            for k in range(0,len(full_inputs)):
+                self.connect_inputs_full(full_inputs[k])
+                self.connect_outputs(full_outputs[k])
+                self.count_output()
+                out=self.print_output()
+                error[i]=error[i]+sum((out-full_outputs[k])**2)
+                if(out.index(max(out))==list(full_outputs[k]).index(max(full_outputs[k]))):
+                    correct[i]+=1
+            ni=ni*0.99
+        return error,correct
     
     def print_output(self):
+        out=list()
         for i in self.layers[-1].neurons:
-            print(i.Y)
+            out.append(i.Y)
+        return out
     
     def print_weights(self):
         for j in self.layers:
