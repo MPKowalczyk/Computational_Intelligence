@@ -42,15 +42,30 @@ plotresponse(Ts,Y);
 ploterrcorr(E);
 
 %% Inner correlation
-% plotinerrcorr(Xs,E);
-% net2 = closeloop(net);
-% view(net);
-% [Xs,Xi,Ai,Ts] = preparets(net2,x,{},t);
-% Y = net2(Xs,Xi,Ai);
-% plotresponse(Ts,Y);
-% net3 = removedelay(net);
-% view(net);
-% [Xs,Xi,Ai,Ts] = preparets(net3,x,{},t);
-% Y = net3(Xs,Xi,Ai);
-% plotresponse(Ts,Y);
-% displayEndOfDemoMessage(mfilename);
+plotinerrcorr(Xs,E);
+
+%% Closed loop network
+net2 = closeloop(net);
+view(net2);
+[Xs,Xi,Ai,Ts] = preparets(net2,x,{},t);
+Y = net2(Xs,Xi,Ai);
+
+%% Train network
+[net2,tr] = train(net2,Xs,Ts,Xi,Ai);
+Y = net2(Xs,Xi,Ai);
+
+%% Response
+plotresponse(Ts,Y);
+
+%% Network without delay
+net3 = removedelay(net);
+view(net3);
+[Xs,Xi,Ai,Ts] = preparets(net3,x,{},t);
+Y = net3(Xs,Xi,Ai);
+
+%% Train network
+[net3,tr] = train(net3,Xs,Ts,Xi,Ai);
+Y = net3(Xs,Xi,Ai);
+
+%% Response
+plotresponse(Ts,Y);
