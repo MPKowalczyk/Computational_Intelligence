@@ -1,9 +1,13 @@
-%% Maglev Modeling
+%% NARX application
 % Apply NARX identification method to magnetic levitation data.
 
 %% Preapre data for identification
-[x,t] = maglev_dataset;
+%[x,t] = maglev_dataset;
+load('timeseries\Model_LQI_step.mat');
+x=num2cell(sim_con.');
+t=num2cell(1e3*sim_pos(:,2).');%;sim_vel.';sim_cur.']);
 % setdemorandstream(491218381);
+%%
 net = narxnet(1:2,1:2,10);
 view(net);
 [Xs,Xi,Ai,Ts] = preparets(net,x,{},t);
